@@ -1,0 +1,12 @@
+
+
+1.
+
+  sort()
+  if (sum + arr[i] < halfSum) sum += arr[i]
+  остальную часть массива просто добавить в подмассив №2
+
+2.
+
+  isSubsetSum (true) -> поиск нужного подмассива
+  isSubsetSum (false) -> 1.
