@@ -9,18 +9,6 @@ class Code {
 
     public static void main(String[] args) throws IOException {
 
-        // TODO: implement isSubsetSum for better accuracy of arr division
-        /*int[] set = {1, 1, 5, 5};
-        int sum = 0;              //особливість використання int
-        for (int i : set) sum += i;
-        System.out.println("half sum:" + sum / 2);
-
-        int n = set.length;
-        if (isSubsetSum(set, n, sum / 2))
-            System.out.println("Found a subset with given sum");
-        else
-            System.out.println("No subset with given sum");*/
-
         Map<Character, Integer> map = new LinkedHashMap<>();  //Linked для правильного порядка
         Map<Character, String> mapCodes = new LinkedHashMap<>();
 
@@ -66,6 +54,7 @@ class Code {
 
             if (addToCode == '-') code = "0";
 
+            // map have only 1 element
             mapCodes.put(map.keySet().iterator().next(), code);
             return;
         }
@@ -99,10 +88,10 @@ class Code {
 
         divisionFano(leftMap, mapCodes, code, '1');  // invert 0 to 1, cause left part is min
         divisionFano(rightMap, mapCodes, code, '0');
-
     }
 
     public static void createEncodedFile(Map<Character, String> codeMap, String fileName) throws IOException {
+
         FileReader fileReader = new FileReader(fileName);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
@@ -223,8 +212,8 @@ class Code {
 
         for (char a : map.keySet()) {
 
-            System.out.println("key: " + a + ";\tvalue:" + map.get(a));
-
+            if (a == '\n') System.out.println("key:\\n;\tvalue:" + map.get(a));
+            else System.out.println("key: " + a + ";\tvalue:" + map.get(a));
         }
     }
 
@@ -232,8 +221,8 @@ class Code {
 
         for (char a : map.keySet()) {
 
-            System.out.println("key: " + a + ";\tvalue:" + map.get(a));
-
+            if (a == '\n') System.out.println("key:\\n;\tvalue:" + map.get(a));
+            else System.out.println("key: " + a + ";\tvalue:" + map.get(a));
         }
     }
 
@@ -260,6 +249,5 @@ class Code {
         }
 
         bufferedReader.close();
-
     }
 }
