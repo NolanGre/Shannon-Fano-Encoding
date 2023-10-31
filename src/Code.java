@@ -12,7 +12,7 @@ class Code {
         Map<Character, Integer> map = new LinkedHashMap<>();  //Linked для правильного порядка
         Map<Character, String> mapCodes = new LinkedHashMap<>();
 
-        readFile("ToEncode.txt", map);
+        readFile(map);
         map.put('└', 1);   // add EOF char
 
         System.out.println("\nInitial Map:");
@@ -30,7 +30,7 @@ class Code {
         createEncodedFile(mapCodes, "ToEncode.txt");
 
         System.out.println("\nDecoded:");
-        createDecodedFile(decodingFano("EncodedFile.bin"));
+        createDecodedFile(decodingFano());
 
         System.out.println("\nSize of initial file: " + Files.size(Paths.get("ToEncode.txt")));
         System.out.println("Size of encoded file: " + Files.size(Paths.get("EncodedFile.bin")));
@@ -96,7 +96,7 @@ class Code {
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
         FileOutputStream fileOutputStream = new FileOutputStream("EncodedFile.bin", false);
-        BitOutputStream output = new BitOutputStream(fileOutputStream);
+        //FileOutputStream output = new FileOutputStream(fileOutputStream);
 
         StringBuilder value = new StringBuilder();
         int c;
@@ -112,13 +112,15 @@ class Code {
 
         value.append(codeMap.get('└'));  // add to end EOF
 
-        for (int i = 0; i < value.length(); i++) {
-            char bit = value.charAt(i);
-            output.writeBit(bit == '1');
+        while (value.length() % 8 != 0) value.append('0');
+
+        for (int i = 0; i < value.length(); i += 8) {
+
+            fileOutputStream.write(Integer.parseInt(value.substring(i, i + 8), 2));
         }
 
         bufferedReader.close();
-        output.close();
+        fileOutputStream.close();
 
         createKeyFile(codeMap);
     }
@@ -135,7 +137,7 @@ class Code {
         writer.close();
     }
 
-    public static StringBuilder decodingFano(String encodedFile) throws IOException {
+    public static StringBuilder decodingFano() throws IOException {
 
         BufferedReader readerKey = new BufferedReader(new FileReader("Key.txt"));
 
@@ -226,9 +228,9 @@ class Code {
         }
     }
 
-    static void readFile(String fileName, Map<Character, Integer> characterCountMap) throws IOException {
+    static void readFile(Map<Character, Integer> characterCountMap) throws IOException {
 
-        FileReader fileReader = new FileReader(fileName);
+        FileReader fileReader = new FileReader("ToEncode.txt");
 
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
